@@ -60,9 +60,15 @@
 
     function pad(n) { return String(n).padStart(2, '0'); }
 
+    const ONE_YEAR_MS = 365.25 * 24 * 3600 * 1000;
+
     function update() {
       const now = new Date();
       const diff = TARGET - now;
+      if (diff < ONE_YEAR_MS) {
+        document.body.style.backgroundColor = '#ffb6c1';
+        document.body.style.color = '#000';
+      }
       if (diff <= 0) {
         document.getElementById('days').textContent = '0';
         document.getElementById('days-label').textContent = '0';
