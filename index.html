@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Обратный отсчёт до 7 мая 2036</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .label {
+      font-size: clamp(1rem, 3vw, 1.6rem);
+      letter-spacing: 0.04em;
+      text-align: center;
+      margin-bottom: 0.5em;
+      opacity: 0.85;
+    }
+
+    .days {
+      font-size: clamp(6rem, 22vw, 18rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+  </style>
+</head>
+<body>
+  <p class="label" id="label">до 7 мая 2036 года осталось <span id="days-label">…</span> дней</p>
+  <div class="days" id="days">…</div>
+
+  <script>
+    const TARGET = new Date('2036-05-07T00:00:00');
+
+    function update() {
+      const now = new Date();
+      const diff = TARGET - now;
+      const days = diff > 0 ? Math.ceil(diff / (1000 * 60 * 60 * 24)) : 0;
+      document.getElementById('days').textContent = days.toLocaleString('ru-RU');
+      document.getElementById('days-label').textContent = days.toLocaleString('ru-RU');
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
