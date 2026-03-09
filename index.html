@@ -25,40 +25,68 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: 8vh;
       min-height: 100vh;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: bold;
     }
 
     .label {
-      font-size: clamp(1rem, 3vw, 1.6rem);
-      letter-spacing: 0.04em;
+      font-size: clamp(1.2rem, 3.5vw, 2.2rem);
       text-align: center;
       margin-bottom: 0.5em;
-      opacity: 0.85;
+      line-height: 1.5;
+      opacity: 0.9;
+      padding: 0 1rem;
     }
 
     .days {
       font-size: clamp(6rem, 22vw, 18rem);
-      font-weight: 900;
+      font-weight: bold;
       line-height: 1;
       letter-spacing: -0.02em;
+    }
+
+    .hms {
+      font-size: clamp(1.4rem, 4vw, 2.6rem);
+      margin-top: 0.4em;
+      opacity: 0.75;
+      letter-spacing: 0.05em;
     }
   </style>
 </head>
 <body>
-  <p class="label" id="label">до 7 мая 2036 года осталось <span id="days-label">…</span> дней</p>
+  <p class="label">до 7 мая 2036 года осталось<br><span id="days-label">…</span> дн. <span id="hms-label">…</span></p>
   <div class="days" id="days">…</div>
+  <div class="hms" id="hms">…</div>
 
   <script>
     const TARGET = new Date('2036-05-07T00:00:00');
 
+    function pad(n) { return String(n).padStart(2, '0'); }
+
     function update() {
       const now = new Date();
       const diff = TARGET - now;
-      const days = diff > 0 ? Math.ceil(diff / (1000 * 60 * 60 * 24)) : 0;
+      if (diff <= 0) {
+        document.getElementById('days').textContent = '0';
+        document.getElementById('days-label').textContent = '0';
+        document.getElementById('hms').textContent = '00:00:00';
+        document.getElementById('hms-label').textContent = '00:00:00';
+        return;
+      }
+      const totalSec = Math.floor(diff / 1000);
+      const days = Math.floor(totalSec / 86400);
+      const h = Math.floor((totalSec % 86400) / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      const hms = `${pad(h)}:${pad(m)}:${pad(s)}`;
+
       document.getElementById('days').textContent = days.toLocaleString('ru-RU');
       document.getElementById('days-label').textContent = days.toLocaleString('ru-RU');
+      document.getElementById('hms').textContent = hms;
+      document.getElementById('hms-label').textContent = hms;
     }
 
     update();
