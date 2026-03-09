@@ -48,18 +48,12 @@
       letter-spacing: -0.02em;
     }
 
-    .hms {
-      font-size: clamp(1.4rem, 4vw, 2.6rem);
-      margin-top: 0.4em;
-      opacity: 0.75;
-      letter-spacing: 0.05em;
-    }
+
   </style>
 </head>
 <body>
-  <p class="label">до 7 мая 2036 года осталось<br><span id="days-label">…</span> дн. <span id="hms-label">…</span></p>
+  <p class="label">До 7 мая 2036 года осталось <span id="days-label">…</span> дн. <span id="h-label">…</span> часов <span id="m-label">…</span> минут <span id="s-label">…</span> секунд</p>
   <div class="days" id="days">…</div>
-  <div class="hms" id="hms">…</div>
 
   <script>
     const TARGET = new Date('2036-05-07T00:00:00');
@@ -72,8 +66,9 @@
       if (diff <= 0) {
         document.getElementById('days').textContent = '0';
         document.getElementById('days-label').textContent = '0';
-        document.getElementById('hms').textContent = '00:00:00';
-        document.getElementById('hms-label').textContent = '00:00:00';
+        document.getElementById('h-label').textContent = '0';
+        document.getElementById('m-label').textContent = '0';
+        document.getElementById('s-label').textContent = '0';
         return;
       }
       const totalSec = Math.floor(diff / 1000);
@@ -81,12 +76,11 @@
       const h = Math.floor((totalSec % 86400) / 3600);
       const m = Math.floor((totalSec % 3600) / 60);
       const s = totalSec % 60;
-      const hms = `${pad(h)}:${pad(m)}:${pad(s)}`;
-
       document.getElementById('days').textContent = days.toLocaleString('ru-RU');
       document.getElementById('days-label').textContent = days.toLocaleString('ru-RU');
-      document.getElementById('hms').textContent = hms;
-      document.getElementById('hms-label').textContent = hms;
+      document.getElementById('h-label').textContent = h;
+      document.getElementById('m-label').textContent = m;
+      document.getElementById('s-label').textContent = s;
     }
 
     update();
